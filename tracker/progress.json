@@ -208,19 +208,19 @@
           "id": "p3_frozen",
           "name": "Stage 1: Frozen Backbone (MobileNetV2 & ResNet50)",
           "type": "task",
-          "note": "Latih head identik (GAP -> Dropout 0.3 -> Dense 128 -> Dropout 0.2 -> Sigmoid) dengan Adam lr=1e-4 / 3e-4.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Latih head identik (GAP -> Dropout 0.3 -> Dense 128 -> Dropout 0.2 -> Sigmoid) dengan Adam lr=3e-4. Exp-2A MobileNetV2 Frozen: 94.33% acc / 0.9909 AUC; Exp-3A ResNet50 Frozen: 97.87% acc / 0.9983 AUC.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T05:55:00+07:00"
         },
         {
           "id": "p3_finetune",
           "name": "Stage 2: Selective Fine-Tuning (BN frozen)",
           "type": "task",
-          "note": "Unfreeze 20-30% layer akhir backbone, jaga semua BatchNormalization tetap trainable=False, AdamW lr=1e-5.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Unfreeze 20-30% layer akhir backbone, jaga semua BatchNormalization tetap trainable=False, AdamW lr=1e-5. Exp-2B MobileNetV2 FT: 97.52% acc / 0.9975 AUC / 24.65 MB; Exp-3B ResNet50 FT: 98.23% acc / 0.9989 AUC / 224.75 MB.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T05:55:00+07:00"
         },
         {
           "id": "p3_modern",
