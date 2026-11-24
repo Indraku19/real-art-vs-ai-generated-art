@@ -1,0 +1,334 @@
+{
+  "id": "root",
+  "name": "Real vs AI Art Research",
+  "type": "root",
+  "note": "Klasifikasi Citra Seni Asli vs AI (CNN Baseline vs Transfer Learning)",
+  "children": [
+    {
+      "id": "step_minus_1",
+      "name": "Step -1: Pre-Project & Docs",
+      "type": "phase",
+      "note": "Audit proposal awal, perumusan RQ1-RQ4, setup Google Drive & Living Research Log",
+      "children": [
+        {
+          "id": "s_1_audit",
+          "name": "Audit proposal & 5 celah teknis",
+          "type": "task",
+          "note": "Identifikasi normalisasi backbone, ledakan parameter Flatten 25.7M, repo rujukan ResNet50, shortcut learning, & estimasi waktu.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        },
+        {
+          "id": "s_1_rq",
+          "name": "Rumuskan Research Questions (RQ1-RQ4)",
+          "type": "task",
+          "note": "Scratch vs TL, Frozen vs Fine-Tuning, Shortcut vs Real Features, OOD Generalization.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        },
+        {
+          "id": "s_1_drive",
+          "name": "Buat struktur folder Google Drive",
+          "type": "task",
+          "note": "Folder Real-vs-AI-Art-Classification (01_Docs_&_Logs, 02_Notebooks, 03_Figures_&_Visuals, 04_Models).",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        },
+        {
+          "id": "s_1_gdoc",
+          "name": "Inisialisasi Living Research Log (GDocs)",
+          "type": "task",
+          "note": "Buat Google Docs Research Log & Progress Tracker sebagai catatan progres berkelanjutan.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        }
+      ]
+    },
+    {
+      "id": "phase_0",
+      "name": "Phase 0: Setup & Reproducibility",
+      "type": "phase",
+      "note": "Setup direktori kerja lokal, Python 3.12 via uv, seed locking, dan experiment log CSV",
+      "children": [
+        {
+          "id": "p0_dirs",
+          "name": "Setup direktori kerja & Python 3.12",
+          "type": "task",
+          "note": "Buat data/, notebooks/, src/, models/, reports/figures/, experiments/ dan .venv Python 3.12 (TF 2.21.0).",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        },
+        {
+          "id": "p0_seed",
+          "name": "Kunci random seed (42) di src/config.py",
+          "type": "task",
+          "note": "Lock PYTHONHASHSEED, random, numpy, dan tf.keras.utils.set_random_seed(42).",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        },
+        {
+          "id": "p0_explog",
+          "name": "Siapkan experiments/experiment_log.csv",
+          "type": "task",
+          "note": "Template pencatatan hyperparameter, metrik evaluasi, waktu/epoch, dan baris patokan Ref-0.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        },
+        {
+          "id": "p0_labels",
+          "name": "Tetapkan konvensi label (0=Real, 1=AI)",
+          "type": "task",
+          "note": "LABEL_MAP = {0: 'Real Art', 1: 'AI-Generated Art'} terpusat di src/config.py.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:05:00+07:00"
+        }
+      ]
+    },
+    {
+      "id": "phase_1",
+      "name": "Phase 1: Data Forensics & Pipeline",
+      "type": "phase",
+      "note": "Audit integritas dataset, deteksi bias/shortcut, deduplikasi pHash, split 80/10/10, tf.data pipeline",
+      "children": [
+        {
+          "id": "p1_audit",
+          "name": "Unduh dataset HF & audit integritas",
+          "type": "task",
+          "note": "Unduh DataScienceProject/Art_Images_Ai_And_Real_, cek jumlah aktual, file korup, dan konversi ke RGB 3-channel.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:25:14+07:00"
+        },
+        {
+          "id": "p1_forensics",
+          "name": "Forensik bias (resolusi, aspect ratio, format)",
+          "type": "task",
+          "note": "Plot distribusi resolusi, rasio aspek, JPG vs PNG, dan ukuran file per kelas untuk mendeteksi potensi shortcut learning.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:25:14+07:00"
+        },
+        {
+          "id": "p1_phash",
+          "name": "Deduplikasi perceptual hash (pHash)",
+          "type": "task",
+          "note": "Hapus gambar duplikat atau near-duplicate menggunakan imagehash sebelum data splitting agar bebas leakage.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:25:14+07:00"
+        },
+        {
+          "id": "p1_split",
+          "name": "Stratified split 80/10/10 & kunci Test set",
+          "type": "task",
+          "note": "Simpan daftar path dan label ke data/processed/splits.csv agar semua model memakai split yang identik.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:25:14+07:00"
+        },
+        {
+          "id": "p1_tfdata",
+          "name": "Bangun tf.data pipeline & augmentasi",
+          "type": "task",
+          "note": "Resize 224x224, batch(32), cache(), prefetch(AUTOTUNE), serta RandomFlip/Rotation/Zoom khusus Train set.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:25:14+07:00"
+        },
+        {
+          "id": "p1_preproc",
+          "name": "Tanamkan preprocess_input per backbone",
+          "type": "task",
+          "note": "Masukkan Rescaling(1./255), mobilenet_v2.preprocess_input, atau resnet50.preprocess_input sebagai layer pertama model.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T03:25:14+07:00"
+        }
+      ]
+    },
+    {
+      "id": "phase_2",
+      "name": "Phase 2: Controlled Baseline (Scratch)",
+      "type": "phase",
+      "note": "Replikasi benchmark naive (~77%) vs pembangunan fair baseline CNN 4-blok dengan GAP",
+      "children": [
+        {
+          "id": "p2_naive",
+          "name": "Exp-1A: Naive CNN (2 Conv + Flatten)",
+          "type": "task",
+          "note": "Replikasi arsitektur rujukan (32, 64 filter + Flatten + Dense 128) dan buktikan ledakan ~25.7M parameter serta overfitting.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p2_proper",
+          "name": "Exp-1B: Proper Scratch CNN (4 Conv + GAP)",
+          "type": "task",
+          "note": "Fair baseline 4 blok Conv2D (32->64->128->256) + BatchNorm + MaxPool + GlobalAveragePooling2D + Dropout(0.4).",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p2_callbacks",
+          "name": "Pasang callbacks standar training",
+          "type": "task",
+          "note": "EarlyStopping (patience 6), ReduceLROnPlateau (factor 0.5, patience 3), dan ModelCheckpoint (save_best_only).",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p2_log",
+          "name": "Catat metrik & learning curves baseline",
+          "type": "task",
+          "note": "Simpan val metrics, waktu/epoch, jumlah parameter, dan plot kurva train vs val ke experiment_log.csv.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "id": "phase_3",
+      "name": "Phase 3: Transfer Learning & Ablation",
+      "type": "phase",
+      "note": "Eksperimen terkontrol Frozen Feature Extractor vs Selective Fine-Tuning pada MobileNetV2 & ResNet50",
+      "children": [
+        {
+          "id": "p3_frozen",
+          "name": "Stage 1: Frozen Backbone (MobileNetV2 & ResNet50)",
+          "type": "task",
+          "note": "Latih head identik (GAP -> Dropout 0.3 -> Dense 128 -> Dropout 0.2 -> Sigmoid) dengan Adam lr=1e-4 / 3e-4.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p3_finetune",
+          "name": "Stage 2: Selective Fine-Tuning (BN frozen)",
+          "type": "task",
+          "note": "Unfreeze 20-30% layer akhir backbone, jaga semua BatchNormalization tetap trainable=False, AdamW lr=1e-5.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p3_modern",
+          "name": "(Opsional) Pembanding EfficientNetV2B0 / ConvNeXt",
+          "type": "task",
+          "note": "Uji 1 arsitektur CNN modern pada split dan pipeline yang sama untuk mengukur batas atas akurasi.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "id": "phase_4",
+      "name": "Phase 4: Deep Evaluation & Explainability",
+      "type": "phase",
+      "note": "Threshold tuning, evaluasi Test set final, Error Analysis, Grad-CAM, dan OOD Stress Test",
+      "children": [
+        {
+          "id": "p4_thresh",
+          "name": "Threshold tuning pada Validation set",
+          "type": "task",
+          "note": "Analisis kurva Precision-Recall di Val set untuk menentukan threshold optimal (kunci Recall >= 80% / F1 max).",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p4_test",
+          "name": "Evaluasi final Test set (Acc, F1, ROC-AUC, CM)",
+          "type": "task",
+          "note": "Evaluasi sekali saja pada Test set: Accuracy, Loss, Precision, Recall, F1, ROC-AUC, PR-AUC, Confusion Matrix.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p4_latency",
+          "name": "Ukur efisiensi inference (ms, params, MB)",
+          "type": "task",
+          "note": "Benchmark rata-rata latensi per gambar, total parameter, dan ukuran file .keras tiap model.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p4_err",
+          "name": "Error Analysis visual (10-16 sampel FP & FN)",
+          "type": "task",
+          "note": "Inspeksi gambar salah prediksi beserta confidence score untuk memetakan gaya seni yang paling mengecoh model.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p4_gradcam",
+          "name": "Implementasi & verifikasi Grad-CAM",
+          "type": "task",
+          "note": "Visualisasikan heatmap layer konvolusi terakhir untuk memastikan model fokus ke tekstur karya, bukan background.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p4_ood",
+          "name": "OOD Stress Test (20-30 citra luar dataset)",
+          "type": "task",
+          "note": "Uji model terbaik ke lukisan museum/WikiArt dan generator AI modern (Midjourney v6, Flux, DALL-E 3).",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        }
+      ]
+    },
+    {
+      "id": "phase_5",
+      "name": "Phase 5: Packaging, Demo & Write-Up",
+      "type": "phase",
+      "note": "Ekspor model final, antarmuka demo Gradio + Grad-CAM, dan laporan teknis akhir",
+      "children": [
+        {
+          "id": "p5_export",
+          "name": "Ekspor model terbaik .keras (self-contained)",
+          "type": "task",
+          "note": "Simpan file .keras final yang menerima input mentah [0..255] dengan preprocessing tertanam di dalamnya.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p5_gradio",
+          "name": "Bangun demo interaktif Gradio + Grad-CAM",
+          "type": "task",
+          "note": "UI upload gambar -> label prediksi + confidence score + heatmap Grad-CAM berdampingan.",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        },
+        {
+          "id": "p5_writeup",
+          "name": "Finalisasi laporan portofolio & future work",
+          "type": "task",
+          "note": "Lengkapi README.md & Research Log dengan tabel ablasi, temuan forensik, OOD test, dan limitasi (FFT/ELA).",
+          "done": false,
+          "checked_by": null,
+          "updated_at": null
+        }
+      ]
+    }
+  ]
+}

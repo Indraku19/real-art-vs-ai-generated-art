@@ -1,0 +1,13 @@
+tensorflow>=2.16,<2.22
+datasets
+huggingface_hub
+Pillow
+ImageHash
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+tqdm
+ipykernel
+gradio

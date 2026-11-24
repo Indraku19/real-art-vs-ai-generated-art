@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real vs AI Art — Progress Framework</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <style>
+    :root {
+      --bg: #fcfdfe;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --link-line: #cbd5e1;
+      --blue: #5b9bd5;
+      --blue-dark: #3b7db8;
+      --green: #16a34a;
+      --green-dark: #15803d;
+      --ai-bg: #dbeafe;
+      --ai-fg: #1d4ed8;
+      --user-bg: #dcfce7;
+      --user-fg: #15803d;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      width: 150px;
+      height: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--muted);
+      padding-right: 8px;
+      border-right: 1px solid var(--border);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot.collapsed { background: var(--blue); border: 1.5px solid var(--blue-dark); }
+    .dot.expanded { background: #fff; border: 1.5px solid var(--blue); }
+    .dot.done { background: var(--green); border: 1.5px solid var(--green-dark); }
+
+    .pill-mini {
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .pill-ai { background: var(--ai-bg); color: var(--ai-fg); }
+    .pill-user { background: var(--user-bg); color: var(--user-fg); }
+
+    button, .ext-link {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    button:hover, .ext-link:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .sync-badge.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+
+    .sync-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    .sync-badge.error .sync-pulse {
+      background: #dc2626;
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    #canvas {
+      width: 100%;
+      height: 100%;
+      padding-top: 52px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      display: block;
+    }
+
+    svg:active { cursor: grabbing; }
+
+    .link {
+      fill: none;
+      stroke: var(--link-line);
+      stroke-width: 1.5px;
+    }
+
+    .node {
+      cursor: pointer;
+    }
+
+    .node text.label {
+      font-size: 12.5px;
+      fill: var(--text);
+      user-select: none;
+    }
+
+    .node.is-phase text.label,
+    .node.is-root text.label {
+      font-weight: 600;
+    }
+
+    .node.is-task.is-done text.label {
+      fill: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .node text.count-label {
+      font-size: 11px;
+      font-weight: 600;
+      fill: var(--muted);
+      user-select: none;
+    }
+
+    .node.is-all-done text.count-label {
+      fill: var(--green-dark);
+    }
+
+    .tooltip {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 30;
+      max-width: 320px;
+      background: rgba(15, 23, 42, 0.94);
+      color: #f8fafc;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.45;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.22);
+      transition: opacity 0.12s ease;
+    }
+
+    .tooltip .tt-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #ffffff;
+    }
+
+    .tooltip .tt-note {
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    .tooltip .tt-meta {
+      font-size: 11px;
+      color: #94a3b8;
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      padding-top: 5px;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 12px;
+      left: 16px;
+      z-index: 15;
+      font-size: 11.5px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Real vs AI Art — Progress Framework</h1>
+      <div class="progress-wrap">
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+        <span id="progressText">0 / 0 tasks (0%)</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="legend">
+        <span class="legend-item"><span class="dot collapsed"></span>Collapsed</span>
+        <span class="legend-item"><span class="dot expanded"></span>Expanded</span>
+        <span class="legend-item"><span class="dot done"></span>Done</span>
+        <span class="legend-item"><span class="pill-mini pill-ai">AI</span></span>
+        <span class="legend-item"><span class="pill-mini pill-user">You</span></span>
+      </div>
+      <button id="btnExpandAll" type="button">Expand All</button>
+      <button id="btnCollapsePhases" type="button">Collapse Phases</button>
+      <button id="btnResetView" type="button">Reset View</button>
+      <a class="ext-link" href="https://docs.google.com/document/d/1RcadCdzhNb0HJgKf5FN61nsJZgXwhUWTLxxa2DlPSxM/edit" target="_blank" rel="noopener noreferrer">Google Docs Log</a>
+      <a class="ext-link" href="https://drive.google.com/drive/folders/1-H_FJGoVT5PmSaYm0xVSzQhkO9Bn9pWu" target="_blank" rel="noopener noreferrer">Drive Folder</a>
+      <span id="syncBadge" class="sync-badge"><span class="sync-pulse"></span><span id="syncLabel">Live Sync: ON</span></span>
+    </div>
+  </header>
+
+  <main id="canvas"></main>
+  <div id="tooltip" class="tooltip"></div>
+  <div class="hint">Klik node biru/phase untuk buka-tutup · Klik task untuk ceklis (otomatis tersimpan ke progress.json) · Drag/scroll untuk geser &amp; zoom</div>
+
+  <script>
+    const NODE_DX = 42;
+    const NODE_DY = 320;
+    const DURATION = 320;
+
+    let root = null;
+    let nodeCounter = 0;
+    let isUpdating = false;
+
+    const svg = d3.select("#canvas").append("svg");
+    const gRoot = svg.append("g");
+    const gLinks = gRoot.append("g").attr("class", "links");
+    const gNodes = gRoot.append("g").attr("class", "nodes");
+
+    const tooltip = d3.select("#tooltip");
+    const treeLayout = d3.tree().nodeSize([NODE_DX, NODE_DY]);
+    const diagonal = d3.linkHorizontal().x(d => d.y).y(d => d.x);
+
+    const zoom = d3.zoom()
+      .scaleExtent([0.35, 2.5])
+      .on("zoom", (event) => gRoot.attr("transform", event.transform));
+
+    svg.call(zoom);
+
+    function resetView() {
+      const h = window.innerHeight - 60;
+      const initialTransform = d3.zoomIdentity.translate(180, Math.max(240, h / 2)).scale(0.95);
+      svg.transition().duration(350).call(zoom.transform, initialTransform);
+    }
+
+    function countTasks(node) {
+      if (node.data.type === "task") {
+        return { done: node.data.done ? 1 : 0, total: 1 };
+      }
+      const list = (node.children || []).concat(node._children || []);
+      return list.reduce((acc, child) => {
+        const sub = countTasks(child);
+        return { done: acc.done + sub.done, total: acc.total + sub.total };
+      }, { done: 0, total: 0 });
+    }
+
+    function updateHeaderProgress() {
+      if (!root) return;
+      const stats = countTasks(root);
+      const pct = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+      document.getElementById("progressFill").style.width = `${pct}%`;
+      document.getElementById("progressText").textContent = `${stats.done} / ${stats.total} tasks (${pct}%)`;
+    }
+
+    function collapseChildren(d) {
+      if (d.children) {
+        d._children = d.children;
+        d._children.forEach(collapseChildren);
+        d.children = null;
+      }
+    }
+
+    function expandAllNodes(d) {
+      if (d._children) {
+        d.children = d._children;
+        d._children = null;
+      }
+      if (d.children) {
+        d.children.forEach(expandAllNodes);
+      }
+    }
+
+    function showTooltip(event, d) {
+      const data = d.data;
+      let meta = "";
+      if (data.type === "task") {
+        const who = data.checked_by === "ai" ? "AI" : (data.checked_by === "user" ? "You" : "-");
+        const status = data.done ? "Done" : "Pending";
+        const time = data.updated_at ? data.updated_at.replace("T", " ") : "-";
+        meta = `Status: <strong>${status}</strong> · Checked by: <strong>${who}</strong><br/>Updated: ${time}`;
+      } else {
+        const stats = countTasks(d);
+        meta = `Progress: <strong>${stats.done} / ${stats.total}</strong> tasks selesai · Klik untuk expand/collapse`;
+      }
+      tooltip.html(
+        `<div class="tt-title">${data.name}</div>` +
+        `<div class="tt-note">${data.note || ""}</div>` +
+        `<div class="tt-meta">${meta}</div>`
+      );
+      tooltip.style("opacity", 1);
+      moveTooltip(event);
+    }
+
+    function moveTooltip(event) {
+      const pad = 14;
+      const w = 320;
+      const x = Math.min(window.innerWidth - w - pad, event.clientX + pad);
+      const y = Math.min(window.innerHeight - 130, event.clientY + pad);
+      tooltip.style("left", `${x}px`).style("top", `${y}px`);
+    }
+
+    function hideTooltip() {
+      tooltip.style("opacity", 0);
+    }
+
+    async function toggleTask(d) {
+      if (isUpdating) return;
+      const nextDone = !d.data.done;
+      isUpdating = true;
+      try {
+        const res = await fetch("/api/toggle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: d.data.id, done: nextDone, checked_by: "user" })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const freshTree = await res.json();
+        mergeRemoteState(freshTree);
+        setSyncOk(true);
+      } catch (err) {
+        console.error("Toggle failed:", err);
+        setSyncOk(false);
+      } finally {
+        isUpdating = false;
+      }
+    }
+
+    function handleNodeClick(event, d) {
+      event.stopPropagation();
+      if (d.data.type === "task") {
+        toggleTask(d);
+        return;
+      }
+      if (d.children) {
+        d._children = d.children;
+        d.children = null;
+      } else if (d._children) {
+        d.children = d._children;
+        d._children = null;
+      }
+      update(d);
+    }
+
+    function setSyncOk(ok) {
+      const badge = document.getElementById("syncBadge");
+      const label = document.getElementById("syncLabel");
+      if (ok) {
+        badge.classList.remove("error");
+        label.textContent = "Live Sync: ON";
+      } else {
+        badge.classList.add("error");
+        label.textContent = "Sync Reconnecting...";
+      }
+    }
+
+    function collectMap(rawNode, map = {}) {
+      map[rawNode.id] = rawNode;
+      if (rawNode.children) {
+        rawNode.children.forEach(c => collectMap(c, map));
+      }
+      return map;
+    }
+
+    function applyMapToHierarchy(node, map) {
+      const fresh = map[node.data.id];
+      if (fresh) {
+        node.data.name = fresh.name;
+        node.data.note = fresh.note;
+        if (node.data.type === "task") {
+          node.data.done = Boolean(fresh.done);
+          node.data.checked_by = fresh.checked_by || null;
+          node.data.updated_at = fresh.updated_at || null;
+        }
+      }
+      (node.children || []).forEach(c => applyMapToHierarchy(c, map));
+      (node._children || []).forEach(c => applyMapToHierarchy(c, map));
+    }
+
+    function mergeRemoteState(freshJson) {
+      if (!root) return;
+      const map = collectMap(freshJson);
+      applyMapToHierarchy(root, map);
+      update(root, 0);
+    }
+
+    function update(source, animMs = DURATION) {
+      treeLayout(root);
+      const nodes = root.descendants();
+      const links = root.links();
+
+      nodes.forEach(d => {
+        d.y = d.depth * NODE_DY;
+      });
+
+      const t = svg.transition().duration(animMs);
+
+      const nodeSel = gNodes.selectAll("g.node")
+        .data(nodes, d => d.data.id || (d.id || (d.id = ++nodeCounter)));
+
+      const nodeEnter = nodeSel.enter().append("g")
+        .attr("class", "node")
+        .attr("transform", () => `translate(${source.y0 ?? source.y},${source.x0 ?? source.x})`)
+        .on("click", handleNodeClick)
+        .on("mouseenter", showTooltip)
+        .on("mousemove", moveTooltip)
+        .on("mouseleave", hideTooltip);
+
+      nodeEnter.append("circle")
+        .attr("class", "node-circle")
+        .attr("r", 1e-6);
+
+      nodeEnter.append("text")
+        .attr("class", "check-glyph")
+        .attr("text-anchor", "middle")
+        .attr("dy", "0.35em")
+        .attr("font-size", "10.5px")
+        .attr("font-weight", "800")
+        .attr("fill", "#ffffff")
+        .style("pointer-events", "none");
+
+      nodeEnter.append("text")
+        .attr("class", "label")
+        .attr("dy", "0.32em");
+
+      nodeEnter.append("text")
+        .attr("class", "count-label")
+        .attr("dy", "0.32em");
+
+      const badgeGroup = nodeEnter.append("g")
+        .attr("class", "who-badge");
+
+      badgeGroup.append("rect")
+        .attr("rx", 4)
+        .attr("ry", 4)
+        .attr("height", 16)
+        .attr("y", -8);
+
+      badgeGroup.append("text")
+        .attr("dy", "0.33em")
+        .attr("font-size", "10px")
+        .attr("font-weight", "700")
+        .attr("text-anchor", "middle");
+
+      const nodeUpdate = nodeEnter.merge(nodeSel);
+
+      nodeUpdate.attr("class", d => {
+        const cls = ["node", `is-${d.data.type}`];
+        if (d.data.type === "task" && d.data.done) cls.push("is-done");
+        if (d.data.type !== "task") {
+          const stats = countTasks(d);
+          if (stats.total > 0 && stats.done === stats.total) cls.push("is-all-done");
+        }
+        return cls.join(" ");
+      });
+
+      nodeUpdate.transition(t)
+        .attr("transform", d => `translate(${d.y},${d.x})`);
+
+      nodeUpdate.select("circle.node-circle")
+        .transition(t)
+        .attr("r", d => (d.data.type === "root" ? 9 : d.data.type === "phase" ? 7.5 : 8))
+        .attr("fill", d => {
+          if (d.data.type === "task") {
+            return d.data.done ? "var(--green)" : "#ffffff";
+          }
+          const stats = countTasks(d);
+          const allDone = stats.total > 0 && stats.done === stats.total;
+          if (d._children) return allDone ? "var(--green)" : "var(--blue)";
+          return "#ffffff";
+        })
+        .attr("stroke", d => {
+          if (d.data.type === "task") {
+            return d.data.done ? "var(--green-dark)" : "#94a3b8";
+          }
+          const stats = countTasks(d);
+          const allDone = stats.total > 0 && stats.done === stats.total;
+          return allDone ? "var(--green-dark)" : "var(--blue-dark)";
+        })
+        .attr("stroke-width", 2);
+
+      nodeUpdate.select("text.check-glyph")
+        .text(d => (d.data.type === "task" && d.data.done ? "✓" : ""));
+
+      nodeUpdate.select("text.label")
+        .attr("x", d => (d.children || d._children ? -13 : 14))
+        .attr("text-anchor", d => (d.children || d._children ? "end" : "start"))
+        .text(d => d.data.name);
+
+      nodeUpdate.each(function(d) {
+        const group = d3.select(this);
+        const labelNode = group.select("text.label").node();
+        const labelWidth = labelNode ? labelNode.getComputedTextLength() : 0;
+
+        if (d.data.type === "task") {
+          group.select("text.count-label").text("");
+          const badge = group.select("g.who-badge");
+          if (d.data.done && d.data.checked_by) {
+            const isAi = d.data.checked_by === "ai";
+            const text = isAi ? "AI" : "You";
+            const bw = isAi ? 24 : 30;
+            const bx = 14 + labelWidth + 8;
+            badge.style("display", null)
+              .attr("transform", `translate(${bx}, 0)`);
+            badge.select("rect")
+              .attr("width", bw)
+              .attr("fill", isAi ? "var(--ai-bg)" : "var(--user-bg)");
+            badge.select("text")
+              .attr("x", bw / 2)
+              .attr("fill", isAi ? "var(--ai-fg)" : "var(--user-fg)")
+              .text(text);
+          } else {
+            badge.style("display", "none");
+          }
+        } else {
+          group.select("g.who-badge").style("display", "none");
+          const stats = countTasks(d);
+          const countEl = group.select("text.count-label");
+          countEl
+            .attr("x", 13)
+            .attr("text-anchor", "start")
+            .text(`[${stats.done}/${stats.total}]`);
+        }
+      });
+
+      nodeSel.exit().transition(t)
+        .attr("transform", () => `translate(${source.y},${source.x})`)
+        .remove()
+        .select("circle.node-circle")
+        .attr("r", 1e-6);
+
+      const linkSel = gLinks.selectAll("path.link")
+        .data(links, d => d.target.data.id);
+
+      const linkEnter = linkSel.enter().insert("path", "g")
+        .attr("class", "link")
+        .attr("d", () => {
+          const o = { x: source.x0 ?? source.x, y: source.y0 ?? source.y };
+          return diagonal({ source: o, target: o });
+        });
+
+      linkEnter.merge(linkSel).transition(t)
+        .attr("d", diagonal);
+
+      linkSel.exit().transition(t)
+        .attr("d", () => {
+          const o = { x: source.x, y: source.y };
+          return diagonal({ source: o, target: o });
+        })
+        .remove();
+
+      nodes.forEach(d => {
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+
+      updateHeaderProgress();
+    }
+
+    async function init() {
+      const res = await fetch("/api/progress");
+      const data = await res.json();
+      root = d3.hierarchy(data);
+      root.x0 = 0;
+      root.y0 = 0;
+
+      // OSINT-Framework initial view: root expanded, phase branches collapsed
+      if (root.children) {
+        root.children.forEach(collapseChildren);
+      }
+
+      resetView();
+      update(root, 0);
+      setSyncOk(true);
+
+      setInterval(async () => {
+        if (isUpdating) return;
+        try {
+          const r = await fetch("/api/progress", { cache: "no-store" });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const latest = await r.json();
+          mergeRemoteState(latest);
+          setSyncOk(true);
+        } catch (err) {
+          setSyncOk(false);
+        }
+      }, 2500);
+    }
+
+    document.getElementById("btnExpandAll").addEventListener("click", () => {
+      if (!root) return;
+      expandAllNodes(root);
+      update(root);
+    });
+
+    document.getElementById("btnCollapsePhases").addEventListener("click", () => {
+      if (!root || !root.children) return;
+      root.children.forEach(collapseChildren);
+      update(root);
+    });
+
+    document.getElementById("btnResetView").addEventListener("click", resetView);
+
+    init().catch(err => {
+      console.error("Failed to initialize tracker:", err);
+      setSyncOk(false);
+    });
+  </script>
+</body>
+</html>
