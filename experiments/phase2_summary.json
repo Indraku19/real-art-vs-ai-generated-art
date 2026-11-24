@@ -1,0 +1,36 @@
+{
+  "Exp-1A": {
+    "model_name": "exp1a_naive_cnn",
+    "params": 23907521,
+    "model_size_mb": 273.64,
+    "epochs_run": 8,
+    "best_epoch": 2,
+    "mean_sec_per_epoch": 20.57,
+    "best_train_acc": 0.7079,
+    "final_train_acc": 0.8364,
+    "overfit_gap_best_ep": -0.0864,
+    "val_loss": 0.4869,
+    "val_accuracy": 0.7943,
+    "val_precision": 0.8387,
+    "val_recall": 0.7324,
+    "val_f1": 0.782,
+    "val_roc_auc": 0.8554
+  },
+  "Exp-1B": {
+    "model_name": "exp1b_proper_cnn",
+    "params": 422881,
+    "model_size_mb": 4.92,
+    "epochs_run": 15,
+    "best_epoch": 9,
+    "mean_sec_per_epoch": 57.0,
+    "best_train_acc": 0.8816,
+    "final_train_acc": 0.9091,
+    "overfit_gap_best_ep": 0.0199,
+    "val_loss": 0.3547,
+    "val_accuracy": 0.8617,
+    "val_precision": 0.8872,
+    "val_recall": 0.831,
+    "val_f1": 0.8582,
+    "val_roc_auc": 0.9306
+  }
+}

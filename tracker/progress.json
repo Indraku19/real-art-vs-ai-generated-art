@@ -165,36 +165,36 @@
           "name": "Exp-1A: Naive CNN (2 Conv + Flatten)",
           "type": "task",
           "note": "Replikasi arsitektur rujukan (32, 64 filter + Flatten + Dense 128) dan buktikan ledakan ~25.7M parameter serta overfitting.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T04:06:19+07:00"
         },
         {
           "id": "p2_proper",
           "name": "Exp-1B: Proper Scratch CNN (4 Conv + GAP)",
           "type": "task",
           "note": "Fair baseline 4 blok Conv2D (32->64->128->256) + BatchNorm + MaxPool + GlobalAveragePooling2D + Dropout(0.4).",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T04:06:19+07:00"
         },
         {
           "id": "p2_callbacks",
           "name": "Pasang callbacks standar training",
           "type": "task",
           "note": "EarlyStopping (patience 6), ReduceLROnPlateau (factor 0.5, patience 3), dan ModelCheckpoint (save_best_only).",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T04:06:19+07:00"
         },
         {
           "id": "p2_log",
           "name": "Catat metrik & learning curves baseline",
           "type": "task",
           "note": "Simpan val metrics, waktu/epoch, jumlah parameter, dan plot kurva train vs val ke experiment_log.csv.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T04:06:19+07:00"
         }
       ]
     },
