@@ -1,0 +1,108 @@
+{
+  "dataset_id": "DataScienceProject/Art_Images_Ai_And_Real_",
+  "schema_meta": {
+    "image_column": "image",
+    "label_column": "label",
+    "feature_repr": "ClassLabel(names=['fake', 'real'])",
+    "hf_class_names": [
+      "fake",
+      "real"
+    ]
+  },
+  "label_remap": {
+    "0": 1,
+    "1": 0
+  },
+  "raw_total_readable": 2839,
+  "corrupt_count": 0,
+  "corrupt_samples": [],
+  "deduplication": {
+    "near_dup_max_hamming": 4,
+    "exact_duplicate_pairs": 6,
+    "near_duplicate_pairs": 15,
+    "dropped_intra_class": 19,
+    "dropped_cross_class_clusters": 0,
+    "dropped_cross_class_samples": 0,
+    "clean_total": 2820
+  },
+  "splits": {
+    "train": {
+      "total": 2256,
+      "real": 1124,
+      "ai": 1132
+    },
+    "val": {
+      "total": 282,
+      "real": 140,
+      "ai": 142
+    },
+    "test": {
+      "total": 282,
+      "real": 141,
+      "ai": 141
+    },
+    "cross_split_exact_phash_overlap": 0
+  },
+  "class_forensics": {
+    "Real Art": {
+      "raw_count": 1419,
+      "clean_count": 1405,
+      "width_min_med_max": [
+        163,
+        482.0,
+        2401
+      ],
+      "height_min_med_max": [
+        161,
+        484.0,
+        2035
+      ],
+      "aspect_ratio_mean_std": [
+        1.0264,
+        0.3404
+      ],
+      "square_ratio_pct": 1.55,
+      "formats": {
+        "JPEG": 1419
+      },
+      "modes": {
+        "RGB": 1416,
+        "L": 3
+      },
+      "median_byte_size": 64788.0
+    },
+    "AI-Generated Art": {
+      "raw_count": 1420,
+      "clean_count": 1415,
+      "width_min_med_max": [
+        224,
+        1024.0,
+        4096
+      ],
+      "height_min_med_max": [
+        224,
+        1024.0,
+        5824
+      ],
+      "aspect_ratio_mean_std": [
+        0.9966,
+        0.1997
+      ],
+      "square_ratio_pct": 79.01,
+      "formats": {
+        "JPEG": 1349,
+        "PNG": 71
+      },
+      "modes": {
+        "RGB": 1417,
+        "RGBA": 3
+      },
+      "median_byte_size": 137238.5
+    }
+  },
+  "artifacts": {
+    "metadata_csv": "/Users/indra/Documents/mindrakusuma/deep-learning/data/processed/dataset_metadata.csv",
+    "splits_csv": "/Users/indra/Documents/mindrakusuma/deep-learning/data/processed/splits.csv",
+    "figure_path": "/Users/indra/Documents/mindrakusuma/deep-learning/reports/figures/phase1_data_forensics.png"
+  }
+}
