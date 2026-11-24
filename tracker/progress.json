@@ -226,10 +226,10 @@
           "id": "p3_modern",
           "name": "(Opsional) Pembanding EfficientNetV2B0 / ConvNeXt",
           "type": "task",
-          "note": "Uji 1 arsitektur CNN modern pada split dan pipeline yang sama untuk mengukur batas atas akurasi.",
+          "note": "[SKIPPED by user decision] Fokus eksperimen dikunci pada 6 model CNN + Transfer Learning (Exp-1A s.d. Exp-3B).",
           "done": false,
           "checked_by": null,
-          "updated_at": null
+          "updated_at": "2026-11-25T06:21:00+07:00"
         }
       ]
     },

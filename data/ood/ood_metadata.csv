@@ -1,0 +1,31 @@
+ood_id,filename,filepath,label,label_name,source_dataset,source_group,orig_width,orig_height,aspect_ratio,phash,min_hamming_vs_main,details
+OOD-R01,ood_real_01.png,data/ood/images/ood_real_01.png,0,Real Art,huggan/wikiart,WikiArt_Museum,750,597,1.2563,9be6e0505b9fe290,14,WikiArt Realism (landscape)
+OOD-R02,ood_real_02.png,data/ood/images/ood_real_02.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1382,1659,0.833,e1e2f8190b1f0e8f,16,WikiArt Baroque (religious painting)
+OOD-R03,ood_real_03.png,data/ood/images/ood_real_03.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1382,1673,0.8261,a4d3332b258acece,16,WikiArt Post Impressionism (portrait)
+OOD-R04,ood_real_04.png,data/ood/images/ood_real_04.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1472,1382,1.0651,a793b806b1fc4768,14,WikiArt Impressionism (genre painting)
+OOD-R05,ood_real_05.png,data/ood/images/ood_real_05.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1965,1382,1.4219,81fe3b847aa558a3,16,WikiArt Romanticism (Unknown Genre)
+OOD-R06,ood_real_06.png,data/ood/images/ood_real_06.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1710,1382,1.2373,f4cb6c628c263f46,18,WikiArt Art Nouveau (genre painting)
+OOD-R07,ood_real_07.png,data/ood/images/ood_real_07.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1382,2149,0.6431,c73e2aeaceb0a185,20,WikiArt Northern Renaissance (religious painting)
+OOD-R08,ood_real_08.png,data/ood/images/ood_real_08.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1423,1382,1.0297,8eabf625895ca5a4,16,WikiArt Symbolism (genre painting)
+OOD-R09,ood_real_09.png,data/ood/images/ood_real_09.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1382,1777,0.7777,ab32df3466e624c2,18,WikiArt Naive Art Primitivism (still life)
+OOD-R10,ood_real_10.png,data/ood/images/ood_real_10.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1883,1382,1.3625,bf34c061944fb659,18,WikiArt Expressionism (sketch and study)
+OOD-R11,ood_real_11.png,data/ood/images/ood_real_11.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1382,1896,0.7289,83c8b77b8e25d231,18,WikiArt Realism (Unknown Genre)
+OOD-R12,ood_real_12.png,data/ood/images/ood_real_12.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1744,1382,1.2619,b2858e6d7426e393,18,WikiArt Romanticism (landscape)
+OOD-R13,ood_real_13.png,data/ood/images/ood_real_13.png,0,Real Art,huggan/wikiart,WikiArt_Museum,2327,1382,1.6838,e8c696361d0f1a7a,18,WikiArt Symbolism (landscape)
+OOD-R14,ood_real_14.png,data/ood/images/ood_real_14.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1382,1731,0.7984,d65a642732995bc9,18,WikiArt Impressionism (portrait)
+OOD-R15,ood_real_15.png,data/ood/images/ood_real_15.png,0,Real Art,huggan/wikiart,WikiArt_Museum,1382,1664,0.8305,b73dc0c13333c8ce,16,WikiArt Baroque (sketch and study)
+OOD-MJ01,ood_ai_mj_01.png,data/ood/images/ood_ai_mj_01.png,1,AI-Generated Art,brivangl/midjourney-v6-llava,Midjourney_v6,1024,1024,1.0,8a26be4edc33432d,18,A young child is sitting on some pita bread next to some trees
+OOD-MJ02,ood_ai_mj_02.png,data/ood/images/ood_ai_mj_02.png,1,AI-Generated Art,brivangl/midjourney-v6-llava,Midjourney_v6,1024,1024,1.0,9d41c2b6ca476b2d,16,"A baby is chewing on a lawn chair, while a dog A man in a park bench"
+OOD-MJ03,ood_ai_mj_03.png,data/ood/images/ood_ai_mj_03.png,1,AI-Generated Art,brivangl/midjourney-v6-llava,Midjourney_v6,1024,1024,1.0,df9220e454cb3bc9,16,That city skyline with a blow dryer a cord on it
+OOD-MJ04,ood_ai_mj_04.png,data/ood/images/ood_ai_mj_04.png,1,AI-Generated Art,brivangl/midjourney-v6-llava,Midjourney_v6,1024,1024,1.0,b94562ab956c7253,18,A woman smiles as he looks upward
+OOD-MJ05,ood_ai_mj_05.png,data/ood/images/ood_ai_mj_05.png,1,AI-Generated Art,brivangl/midjourney-v6-llava,Midjourney_v6,1024,1024,1.0,c561529aee8e5b61,18,A woman with an umbrella
+OOD-FX01,ood_ai_flux_01.png,data/ood/images/ood_ai_flux_01.png,1,AI-Generated Art,LukasT9/Flux-1-Dev-Images-1k,FLUX_1_Dev,1024,1024,1.0,d191933a7dcc4999,18,FLUX_1_Dev sample #1
+OOD-FX02,ood_ai_flux_02.png,data/ood/images/ood_ai_flux_02.png,1,AI-Generated Art,LukasT9/Flux-1-Dev-Images-1k,FLUX_1_Dev,1024,1024,1.0,c093d32c4dcfc933,16,FLUX_1_Dev sample #2
+OOD-FX03,ood_ai_flux_03.png,data/ood/images/ood_ai_flux_03.png,1,AI-Generated Art,LukasT9/Flux-1-Dev-Images-1k,FLUX_1_Dev,1024,1024,1.0,8081a3a37d4f55f9,16,FLUX_1_Dev sample #3
+OOD-FX04,ood_ai_flux_04.png,data/ood/images/ood_ai_flux_04.png,1,AI-Generated Art,LukasT9/Flux-1-Dev-Images-1k,FLUX_1_Dev,1024,1024,1.0,896666995c26be78,18,FLUX_1_Dev sample #4
+OOD-FX05,ood_ai_flux_05.png,data/ood/images/ood_ai_flux_05.png,1,AI-Generated Art,LukasT9/Flux-1-Dev-Images-1k,FLUX_1_Dev,1024,1024,1.0,d11ff43a0d4c5b0e,18,FLUX_1_Dev sample #5
+OOD-DL01,ood_ai_dalle3_01.png,data/ood/images/ood_ai_dalle3_01.png,1,AI-Generated Art,OpenDatasets/dalle-3-dataset,DALLE_3,1792,1024,1.75,eeb96166bc8d4c12,18,"Wide anime-styled hand-drawn image with watercolor blending on chrome steel, echoing 20th century symbolism and Klimt's artistry, set in the"
+OOD-DL02,ood_ai_dalle3_02.png,data/ood/images/ood_ai_dalle3_02.png,1,AI-Generated Art,OpenDatasets/dalle-3-dataset,DALLE_3,1792,1024,1.75,91ce24786e2e63e3,16,"Landscape illustration showing an Elven maiden in the heart of a rainforest, riding a majestic dragonfly. Her hand reaches out, touching the"
+OOD-DL03,ood_ai_dalle3_03.png,data/ood/images/ood_ai_dalle3_03.png,1,AI-Generated Art,OpenDatasets/dalle-3-dataset,DALLE_3,1024,1024,1.0,e3a19e1e9097c1f2,18,The art style in this image is a mix of **realism** and **surrealism**. The content is a cowgirl standing in front of a desert landscape wit
+OOD-DL04,ood_ai_dalle3_04.png,data/ood/images/ood_ai_dalle3_04.png,1,AI-Generated Art,OpenDatasets/dalle-3-dataset,DALLE_3,1024,1024,1.0,969674e44f86a16b,18,Closeup artistic portrayal on gold paper: An Elven fairy with shimmering wings locks eyes with a gemstone dragonfly. The connection between 
+OOD-DL05,ood_ai_dalle3_05.png,data/ood/images/ood_ai_dalle3_05.png,1,AI-Generated Art,OpenDatasets/dalle-3-dataset,DALLE_3,1792,1024,1.75,beb3c3cc910ce439,18,"Watercolor painting capturing the essence of the Voynich manuscript, portraying a gamer desktop PC in the midst of enigmatic symbols, plants"
