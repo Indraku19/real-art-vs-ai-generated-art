@@ -141,6 +141,49 @@ def build_tf_dataset(
     return ds
 
 
+def load_keras_model_compat(
+    filepath: str | Path, compile: bool = False
+) -> keras.Model:
+    """Load a .keras archive across Keras 3.15->3.13 minor-version config diffs."""
+    import inspect
+
+    from keras.src.initializers.initializer import Initializer
+    from keras.src.layers.normalization.batch_normalization import (
+        BatchNormalization,
+    )
+
+    prev_init = Initializer.from_config
+    prev_bn = BatchNormalization.from_config
+
+    @classmethod
+    def _compat_init_from_config(cls, config):
+        cfg = dict(config)
+        sig = inspect.signature(cls.__init__).parameters
+        if "input_axes" not in sig or cfg.get("input_axes") is None:
+            cfg.pop("input_axes", None)
+        if "output_axes" not in sig or cfg.get("output_axes") is None:
+            cfg.pop("output_axes", None)
+        return prev_init.__func__(cls, cfg)
+
+    @classmethod
+    def _compat_bn_from_config(cls, config):
+        cfg = dict(config)
+        sig = inspect.signature(cls.__init__).parameters
+        if "renorm" not in sig or cfg.get("renorm") is False:
+            cfg.pop("renorm", None)
+            cfg.pop("renorm_clipping", None)
+            cfg.pop("renorm_momentum", None)
+        return prev_bn.__func__(cls, cfg)
+
+    Initializer.from_config = _compat_init_from_config
+    BatchNormalization.from_config = _compat_bn_from_config
+    try:
+        return keras.models.load_model(filepath, compile=compile)
+    finally:
+        Initializer.from_config = prev_init
+        BatchNormalization.from_config = prev_bn
+
+
 if __name__ == "__main__":
     splits_df = load_splits()
     for sp in ("train", "val", "test"):
