@@ -1,0 +1,7 @@
+run_id,phase,model,strategy,preprocessing,params_total,params_trainable,model_size_mb,best_epoch,epochs_run,val_loss,val_accuracy,val_errors_of_282,val_precision,val_recall,val_f1,val_roc_auc,best_train_acc,final_train_acc,overfit_gap_best_ep,mean_sec_per_epoch,steady_state_median_sec_per_epoch
+Exp-1A,Phase 2,Naive CNN (2 Conv + Flatten),Scratch,"[0, 1] in-model",23907521,23907521,273.64,2,8,0.4869,0.7943,58,0.8387,0.7324,0.782,0.8554,0.7079,0.8364,-0.0864,20.57,18.93
+Exp-1B,Phase 2,Proper CNN (4 Conv + BN + GAP),Scratch,"[0, 1] in-model",422881,422881,4.92,9,15,0.3547,0.8617,39,0.8872,0.831,0.8582,0.9306,0.8816,0.9091,0.0199,57.0,57.2
+Exp-2A,Phase 3,MobileNetV2,Frozen Feature Extractor,"mobilenet_v2 [-1, 1] in-model",2422081,164097,11.06,12,17,0.1277,0.9433,16,0.9375,0.9507,0.9441,0.9909,0.9468,0.953,0.0035,30.41,20.64
+Exp-2B,Phase 3,MobileNetV2,"Selective Fine-Tuning (top 30%, BN frozen)","mobilenet_v2 [-1, 1] in-model",2422081,1943233,24.65,8,13,0.0643,0.9752,7,0.972,0.9789,0.9754,0.9975,0.9778,0.992,0.0026,26.99,21.64
+Exp-3A,Phase 3,ResNet50,Frozen Feature Extractor,resnet50 (BGR mean sub) in-model,23850113,262401,93.62,6,11,0.0612,0.9787,6,0.9722,0.9859,0.979,0.9983,0.9668,0.9805,-0.0119,31.38,22.54
+Exp-3B,Phase 3,ResNet50,"Selective Fine-Tuning (top 30%, BN frozen)",resnet50 (BGR mean sub) in-model,23850113,17447169,224.75,2,7,0.0519,0.9823,5,0.979,0.9859,0.9825,0.9989,0.9814,0.9965,-0.0009,37.79,32.41
