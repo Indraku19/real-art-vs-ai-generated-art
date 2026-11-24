@@ -6,6 +6,8 @@ __pycache__/
 .ipynb_checkpoints/
 data/raw/
 data/processed/images/
+data/ood/images/
+data/ood/*.zip
 models/*.keras
 models/*.h5
 *.tmp
