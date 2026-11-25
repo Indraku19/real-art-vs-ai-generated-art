@@ -243,55 +243,55 @@
           "id": "p4_thresh",
           "name": "Threshold tuning pada Validation set",
           "type": "task",
-          "note": "Analisis kurva Precision-Recall di Val set untuk menentukan threshold optimal (kunci Recall >= 80% / F1 max).",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Analisis kurva Precision-Recall di Val set untuk menentukan threshold optimal (kunci Recall >= 80% / F1 max). t* optimal: Exp-2B=0.55, Exp-3B=0.47, Exp-1B=0.11.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:05:00+07:00"
         },
         {
           "id": "p4_test",
           "name": "Evaluasi final Test set (Acc, F1, ROC-AUC, CM)",
           "type": "task",
-          "note": "Evaluasi sekali saja pada Test set: Accuracy, Loss, Precision, Recall, F1, ROC-AUC, PR-AUC, Confusion Matrix.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Evaluasi sekali saja pada Test set (N=282): Exp-3B 98.58% Acc (4 err, AUC 0.9985, PR-AUC 0.9987); Exp-2B 97.87% Acc (6 err, AUC 0.9948); McNemar p=0.625.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:05:00+07:00"
         },
         {
           "id": "p4_latency",
           "name": "Ukur efisiensi inference (ms, params, MB)",
           "type": "task",
-          "note": "Benchmark rata-rata latensi per gambar, total parameter, dan ukuran file .keras tiap model.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Benchmark GPU T4: Exp-2B 160.99ms (155.8 img/s, 24.65MB); Exp-3B 232.69ms (108.1 img/s, 224.75MB); Exp-1B 16.97ms (1136.4 img/s, 4.92MB).",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:05:00+07:00"
         },
         {
           "id": "p4_err",
           "name": "Error Analysis visual (10-16 sampel FP & FN)",
           "type": "task",
-          "note": "Inspeksi gambar salah prediksi beserta confidence score untuk memetakan gaya seni yang paling mengecoh model.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Inspeksi 12 panel error/borderline Test set: ditemukan 1 label noise (meme komik 4-panel di kelas AI), tidak ada bias aspect ratio (mean 0.969).",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:05:00+07:00"
         },
         {
           "id": "p4_gradcam",
           "name": "Implementasi & verifikasi Grad-CAM",
           "type": "task",
-          "note": "Visualisasikan heatmap layer konvolusi terakhir untuk memastikan model fokus ke tekstur karya, bukan background.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Grad-CAM pre-sigmoid logits membuktikan Exp-1B bergantung pada frame-border shortcut, sedangkan Exp-2B & Exp-3B fokus ke tekstur karya interior.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:05:00+07:00"
         },
         {
           "id": "p4_ood",
           "name": "OOD Stress Test (20-30 citra luar dataset)",
           "type": "task",
-          "note": "Uji model terbaik ke lukisan museum/WikiArt dan generator AI modern (Midjourney v6, Flux, DALL-E 3).",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "30 citra eksternal (15 WikiArt + 5 MJ v6 + 5 FLUX.1-Dev + 5 DALL-E 3, pHash>=14): Exp-3B 90.00% (AUC 0.9956, 100% AI modern, 80% WikiArt); Exp-2B 83.33%.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:05:00+07:00"
         }
       ]
     },
