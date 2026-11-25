@@ -21,10 +21,11 @@ CUSTOM_CSS = """
     margin-bottom: 0.4rem;
 }
 .diag-card {
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color-primary);
     border-radius: 10px;
     padding: 12px 14px;
-    background: #fafafa;
+    background: var(--background-fill-secondary);
+    color: var(--body-text-color);
 }
 """
 
