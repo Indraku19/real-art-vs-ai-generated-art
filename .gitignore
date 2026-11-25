@@ -9,6 +9,7 @@ data/processed/images/
 data/ood/images/
 data/ood/*.zip
 models/*.keras
+models/**/*.keras
 models/*.h5
 *.tmp
 .progress_*.tmp
