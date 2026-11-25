@@ -305,28 +305,28 @@
           "id": "p5_export",
           "name": "Ekspor model terbaik .keras (self-contained)",
           "type": "task",
-          "note": "Simpan file .keras final yang menerima input mentah [0..255] dengan preprocessing tertanam di dalamnya.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Diekspor lewat src/export_models.py tanpa optimizer state ke models/export/: art_classifier_resnet50_ft.keras (91.61 MB, -59.24%) & art_classifier_mobilenetv2_ft.keras (9.80 MB, -60.22%), paritas max_abs_diff=0.0, manifest SHA-256 tersimpan & diunggah ke Drive 04_Models/.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:32:00+07:00"
         },
         {
           "id": "p5_gradio",
           "name": "Bangun demo interaktif Gradio + Grad-CAM",
           "type": "task",
-          "note": "UI upload gambar -> label prediksi + confidence score + heatmap Grad-CAM berdampingan.",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Dibangun src/inference.py (Pre-Sigmoid Logit Grad-CAM) + app.py (Gradio 6.32.0, switcher Exp-3B/Exp-2B, threshold & alpha sliders, Center-Crop 1:1) + Colab launcher notebooks/05_phase5_demo_gradio.ipynb. Terverifikasi inferensi & HTTP 200 OK.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:32:00+07:00"
         },
         {
           "id": "p5_writeup",
           "name": "Finalisasi laporan portofolio & future work",
           "type": "task",
-          "note": "Lengkapi README.md & Research Log dengan tabel ablasi, temuan forensik, OOD test, dan limitasi (FFT/ELA).",
-          "done": false,
-          "checked_by": null,
-          "updated_at": null
+          "note": "Disusun reports/final_technical_report.md, Report 06 di Google Docs (4 grafik tertanam), pembaruan Master Doc Entry #09 & Roadmap, serta README.md lengkap dengan limitasi & future work FFT/ELA.",
+          "done": true,
+          "checked_by": "ai",
+          "updated_at": "2026-11-25T07:32:00+07:00"
         }
       ]
     }

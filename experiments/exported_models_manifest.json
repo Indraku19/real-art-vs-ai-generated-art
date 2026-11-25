@@ -1,0 +1,111 @@
+{
+  "generated_at_wib": "2026-11-25T07:27:36.825548+07:00",
+  "inference_contract": {
+    "expected_input": "RGB float32 tensor in [0.0, 255.0] with shape (N, 224, 224, 3)",
+    "center_crop_recommended": true,
+    "center_crop_rationale": "Mitigates Phase 1 aspect-ratio bias (79.01% AI Art vs 1.55% Real Art are 1:1 square)",
+    "output": "Sigmoid scalar P(AI-Generated Art) in [0.0, 1.0]; class 0 = Real Art, class 1 = AI-Generated Art"
+  },
+  "models": {
+    "resnet50_ft": {
+      "key": "resnet50_ft",
+      "run_id": "Exp-3B",
+      "display_name": "ResNet50 Fine-Tuned (Primary Champion)",
+      "source_checkpoint": "models/exp3b_resnet50_finetuned.keras",
+      "exported_model": "models/export/art_classifier_resnet50_ft.keras",
+      "sha256": "e7d12a8183d4befe2b16b083ff7b636284ec1cf66b07f934f89ab5b8aeae6199",
+      "original_size_bytes": 235670550,
+      "original_size_mb": 224.75,
+      "exported_size_bytes": 96062573,
+      "exported_size_mb": 91.61,
+      "size_reduction_pct": 59.24,
+      "input_shape": [
+        null,
+        224,
+        224,
+        3
+      ],
+      "input_dtype": "float32",
+      "input_range": [
+        0.0,
+        255.0
+      ],
+      "preprocessing": "In-model ResNet50PreprocessLayer (RGB->BGR + ImageNet mean subtraction on [0..255] inputs)",
+      "gradcam_layer": "resnet50",
+      "prob_output_layer": "prob_ai",
+      "label_map": {
+        "0": "Real Art",
+        "1": "AI-Generated Art"
+      },
+      "recommended_threshold": 0.5,
+      "val_tuned_threshold": 0.47,
+      "parity_check_samples": 5,
+      "parity_max_abs_diff": 0.0,
+      "parity_passed": true,
+      "drive_file_id": "1Zuat2bQ_iM0iqb2zAKp8vouQlyGHoZu9",
+      "benchmarks": {
+        "test_accuracy": 0.9858,
+        "test_loss": 0.0414,
+        "test_f1": 0.9858,
+        "test_roc_auc": 0.9985,
+        "test_pr_auc": 0.9987,
+        "ood_accuracy": 0.9,
+        "ood_roc_auc": 0.9956,
+        "gpu_t4_single_ms_median": 232.69,
+        "gpu_t4_throughput_img_s": 108.1,
+        "params_total": 23850113,
+        "params_trainable_ft": 17447169
+      }
+    },
+    "mobilenetv2_ft": {
+      "key": "mobilenetv2_ft",
+      "run_id": "Exp-2B",
+      "display_name": "MobileNetV2 Fine-Tuned (Pareto Lightweight)",
+      "source_checkpoint": "models/exp2b_mobilenetv2_finetuned.keras",
+      "exported_model": "models/export/art_classifier_mobilenetv2_ft.keras",
+      "sha256": "58113a282bf56438a47a6f67ed7e7c3789eed4caf48779165eec2cff28e77bdd",
+      "original_size_bytes": 25845924,
+      "original_size_mb": 24.65,
+      "exported_size_bytes": 10280832,
+      "exported_size_mb": 9.8,
+      "size_reduction_pct": 60.22,
+      "input_shape": [
+        null,
+        224,
+        224,
+        3
+      ],
+      "input_dtype": "float32",
+      "input_range": [
+        0.0,
+        255.0
+      ],
+      "preprocessing": "In-model Rescaling(scale=1/127.5, offset=-1.0) on [0..255] inputs",
+      "gradcam_layer": "mobilenetv2_1.00_224",
+      "prob_output_layer": "prob_ai",
+      "label_map": {
+        "0": "Real Art",
+        "1": "AI-Generated Art"
+      },
+      "recommended_threshold": 0.5,
+      "val_tuned_threshold": 0.55,
+      "parity_check_samples": 5,
+      "parity_max_abs_diff": 0.0,
+      "parity_passed": true,
+      "drive_file_id": "1auHmCzLn9UIB44nIBEs6YxnczzdwqOS3",
+      "benchmarks": {
+        "test_accuracy": 0.9787,
+        "test_loss": 0.0855,
+        "test_f1": 0.9786,
+        "test_roc_auc": 0.9948,
+        "test_pr_auc": 0.9953,
+        "ood_accuracy": 0.8333,
+        "ood_roc_auc": 0.96,
+        "gpu_t4_single_ms_median": 160.99,
+        "gpu_t4_throughput_img_s": 155.8,
+        "params_total": 2422081,
+        "params_trainable_ft": 1943233
+      }
+    }
+  }
+}
